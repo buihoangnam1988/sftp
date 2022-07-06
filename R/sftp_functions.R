@@ -362,6 +362,7 @@ sftp_listdirs <- function(sftp_connection = sftp_con,
 #' @param curl_options A list of named values with names as listed by
 #' \code{RCurl::listCurlOptions}. The values are handed to the .opts parameter
 #' of the RCurl function called by \code{sftp_download}. Optional. Default is an empty list.
+#' @param trim_slashes Trim heading slashes in 'tofolder' or not, which is helpful when you use absolute paths.
 #'
 #' @return The function returns the number of files downloaded, following successful download.
 #'
@@ -385,9 +386,12 @@ sftp_download <- function(file,
                           tofolder = getwd(),
                           sftp_connection = sftp_con,
                           verbose = TRUE,
-                          curl_options = list() ) {
+                          curl_options = list(),
+                          trim_slashes = TRUE ) {
 
-    tofolder <- trim_slashes(tofolder)
+    if (trim_slashes){
+        tofolder <- trim_slashes(tofolder)
+    }
 
     using_wildcard <- FALSE
     if (length(file) == 1) {
